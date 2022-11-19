@@ -32,3 +32,9 @@ Y = [0,prm.L]       #Position selon l'axe des z
 
 nx = 50     #TBD
 ny = 50     #TBD
+
+#Conditons limites frontières à z=L
+
+#Condion d'isolation
+
+#Condition de convection
