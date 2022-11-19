@@ -10,6 +10,8 @@ try:
     from Parametres import *
 except:
     pass
+from inte_fluxBase import inte_fluxBase
+from inte_fluxContour import inte_fluxContour
 
 L = 1       # [m] Longueur
 k = 1       # [W/m*K] Conductivité thermique
@@ -22,3 +24,4 @@ N = 10       # [-] Nombre de points en z
     
 prm = Parametres(L, k, T_inf, T_w, R, h, N)
 print(mdf(2))
+print(prm.R)
