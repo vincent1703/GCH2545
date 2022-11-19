@@ -27,8 +27,8 @@ print(mdf(2))
 print(prm.R)
 
 # Paramètres
-X = [0,prm.R]
-Y = [0,prm.L]
+X = [0,prm.R]       #Position selon l'axe des r (rayon)
+Y = [0,prm.L]       #Position selon l'axe des z
 
 nx = 50     #TBD
 ny = 50     #TBD
