@@ -12,7 +12,7 @@ except:
     pass
 from inte_fluxBase import inte_fluxBase
 from inte_fluxContour import inte_fluxContour
-
+from analytique import ref_analytique
 L = 1       # [m] Longueur
 k = 1       # [W/m*K] Conductivité thermique
 T_inf = 1     # [K] Température de l'air ambiant
