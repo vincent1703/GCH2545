@@ -24,13 +24,13 @@ def inte_fluxContour(T,z,prm):
     Sortie:
         - Valeur numérique de l'intégrale résultante (perte en W)
     """
-
+    "T[r,z]"
 
     # Fonction à écrire
     I=0
-    for i in range(1,len(T)):
-        f_i = (T[i]-prm.T_inf)*prm.h
-        f_i_1 = (T[i-1]-prm.T_inf)*prm.h
+    for i in range(1,len(z)):
+        f_i = (T[-1,i]-prm.T_inf)*prm.h
+        f_i_1 = (T[-1,i-1]-prm.T_inf)*prm.h
         I += (z[i]-z[i-1])*(f_i+f_i_1)/2
     q = 2*np.pi*prm.R*I
     return q# à compléter
