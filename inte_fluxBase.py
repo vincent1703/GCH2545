@@ -6,16 +6,17 @@ Created on Sat Nov 19 17:12:07 2022
 """
 import numpy as np
 
-def inte_fluxBase(T,z,prm):
+def inte_fluxBase(T,z,r,prm):
     """Fonction qui intègre la convection sur la surface de l'ailette.
 
     Entrées:
-        - T : Vecteur comprenant les températures  en Kelvin sur la longueur de l'ailette
+        - T : Matrice comprenant les températures  en Kelvin sur la longueur et le rayon de l'ailette
                 pour une combinaison géométrique donnée
+        - r : Vecteur comprenant les points sur le rayon en mètre
         - z : Vecteur comprenant les points sur la longueur en mètre
         - prm : Objet class parametres()
             - k : Conductivité thermique
-            - T_a : Température ambiante
+            - T_inf : Température ambiante
             - T_w : Température du mur
             - h : Coefficient de convection
             - N : Nombre de points utilisés pour la méthode
@@ -23,13 +24,13 @@ def inte_fluxBase(T,z,prm):
     Sortie:
         - Valeur numérique de l'intégrale résultante (perte en W)
     """
-
-
+    "T[r,z]"
     # Fonction à écrire
     I=0
-    for i in range(1,len(T)):
-        f_i = np.pi*prm.D*(T[i]-prm.T_a)*prm.h
-        f_i_1 = np.pi*prm.D*(T[i-1]-prm.T_a)*prm.h
-        I += (z[i]-z[i-1])*(f_i+f_i_1)/2
-    q = 2*np.pi*prm.R*I
+    for i in range(1,len(r)):
+        for j in range(1,len(z)):
+            f_i_1 = T[i-1,j+1]-T[i-1,j-1]
+            f_i = T[i,j+1]-T[i,j-1]
+            I += (r[i]-r[i-1])/(z[j]-z[j-1])*r[i]*(f_i_1+f_i)/2
+    q = np.pi*prm.k*I
     return q# à compléter
