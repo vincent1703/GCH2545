@@ -25,3 +25,10 @@ N = 10       # [-] Nombre de points en z
 prm = Parametres(L, k, T_inf, T_w, R, h, N)
 print(mdf(2))
 print(prm.R)
+
+# Paramètres
+X = [0,prm.R]
+Y = [0,prm.L]
+
+nx = 50     #TBD
+ny = 50     #TBD
