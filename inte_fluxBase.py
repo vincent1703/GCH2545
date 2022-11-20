@@ -24,7 +24,7 @@ def inte_fluxBase(T,z,r,prm):
     Sortie:
         - Valeur numérique de l'intégrale résultante (perte en W)
     """
-    "T[r,z]"
+    "T[r,z]" "A REVOIR LE SENS DE PARCOURS' MAYBE VA DEVOIR FAIRE L'INVERSE"
     # Fonction à écrire
     I=0
     for i in range(1,len(r)):
