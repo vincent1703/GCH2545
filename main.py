@@ -5,9 +5,10 @@ Created on Sat Nov 19 15:34:32 2022
 @author: Étienne
 """
 import numpy as np
-from mdf import mdf
+
 try:
     from Parametres import *
+    from profil import *
 except:
     pass
 from inte_fluxBase import inte_fluxBase
@@ -23,8 +24,7 @@ Bi = 1
 N = 10       # [-] Nombre de points en z
     
 prm = Parametres(L, k, T_inf, T_w, R, h, N)
-print(mdf(2))
-print(prm.R)
+
 
 # Paramètres
 X = [0,prm.R]       #Position selon l'axe des r (rayon)
