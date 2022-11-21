@@ -128,55 +128,25 @@ def mdf_assemblage(X,Y,prm):
         #                 Bi : [Bi] Nombre de Biot
         #                 nr : Nombre de noeuds (direction radiale, r=0 à r=R)
         #                 nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
-        #                 N : [-] Nombre de points
         #                 CL : condition limite, texte ("isole" ou "convection")
 
     Sorties (dans l'ordre énuméré ci-bas):
         - A : Matrice (array)
         - b : Vecteur (array)
     """
-    # Recuperation des parametres pour calculs
-    nr = prm.nr
-    nz = prm.nz
-    
-    N = nr*nz
-    
-    # Calculs des pas de discrtisation
-    dr = (X[1] - X[0]) / (nr-1)
-    dz = (Y[1] - Y[0]) / (nz-1)
-    
-    
-    x, y = position(X,Y,prm)
-    
-    # Initialisation matrice et vecteur
-    A = np.zeros([N,N])
-    b = np.zeros(N)
-    
-    # Conditions limites
-    Tz_0 = prm.T_w      #Temp à z=0m
-    
-    
-    
-    # Tl = 1 - np.tanh(alpha)       #r = 0m
-    # Tr = 1 - np.tanh(alpha)       #r = Rayon
-    # Tt = 1 - np.tanh(alpha)       #bas
-    # Tb_r = 0                      #bas right
-    
-    
-    
     # Representation de l'ailette (portion superieure, symetrique)
     #  
     #  CL = "isole" :
     #   
     #                     h @ T_inf         h @ T_inf
-    #                       ↗↗↗              ↗↗↗
-    #        ________________________________________________________
+    #        i=0             ↗↗↗              ↗↗↗                   i=nz
+    #    j=0 ________________________________________________________
     # ⭱      |                                                       |\
     # |  T_w |                                                       |\
     # R  q → |                                                       |\
     # |      |                                                       |\
     # ⭳      |_______________________________________________________|\
-    #        \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    #   j=nr \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     #       
     #        ⭰―――――――――――――――――――――――L――――――――――――――――――――――――――――――⭲
     #
@@ -184,16 +154,43 @@ def mdf_assemblage(X,Y,prm):
     #  CL = "convection" :
     #   
     #                     h @ T_inf         h @ T_inf
-    #                       ↗↗↗              ↗↗↗
-    #         ________________________________________________________
+    #         i=0              ↗↗↗              ↗↗↗                 i=nz
+    #    j=0  ________________________________________________________
     #  ⭱      |                                                       |
-    #  |  T_w |                                                       | ↗ h@
+    #  |  T_w |                                                       | ↗ h @
     #  R  q → |                                                       | ↗ T_inf
     #  |      |                                                       | ↗
     #  ⭳      |_______________________________________________________|
-    #         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    #    j=nr \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     #  
     #         ⭰―――――――――――――――――――――――L――――――――――――――――――――――――――――――⭲
+    
+    
+    # Recuperation des parametres pour calculs
+    nr = prm.nr
+    nz = prm.nz
+    T_w = prm.T_w
+    T_inf = prm.T_inf
+    R = prm.R
+    L = prm.L
+    h = prm.h
+    k = prm.k
+    Bi = prm.Bi
+    CL = prm.CL
+    
+    N = nr*nz
+    
+    # Calculs des pas de discrtisation
+    dr = (X[1] - X[0]) / (nr-1)
+    dz = (Y[1] - Y[0]) / (nz-1)
+    
+    # Matrices de position pour indexation
+    x, y = position(X,Y,prm)
+    
+    # Initialisation matrice et vecteur
+    A = np.zeros([N,N])
+    b = np.zeros(N)
+
 
     
     
@@ -211,44 +208,52 @@ def mdf_assemblage(X,Y,prm):
     
     # Frontière gauche
     i = 0
-    for j in range(0, nz):
-        k = i * nz + j
+    for j in range(0, nr):
+        k = i * nr + j
         A[k,k] = 1
-        b[k] = Tl
+        b[k] = T_w
         
     # Frontière droite
-    i = nr - 1
-    for j in range(0, nz):
-        k = i * nz + j
-        A[k,k] = 1
-        b[k] = Tr
-        
+    if CL=="isole":
+        i = nz - 1
+        for j in range(0, nr):
+            k = i * nr + j
+            A[k,k] = 3
+            A[k,k-nr] = -4
+            A[k,k-2*nr] = 1
+            b[k] = 0
+            
+    elif CL=="convection":
+        i = nz - 1
+        for j in range(0, nr):
+            k = i * nr + j
+            A[k,k] = 3 + 2*dz*h/k
+            A[k,k-nr] = -4
+            A[k,k-2*nr] = 1
+            b[k] = 2*dz*h*(T_inf)/k
+    else:
+        print("ERREUR: condition limite string non reconnu")
+            
+    # Frontière bas
+    j = nr - 1
+    for i in range(0, nz):
+        k = i * nr + j
+        A[k,k] = 3
+        A[k,k-1] = -4
+        A[k,k-2] = 1
+        b[k] = 0
+                   
+            
     # Frontière haut
     j = 0
-    for i in range(0, nr):
+    for i in range(0, nz):
         k = i * nz + j
-        if CL == "isole":
-            A[k,k] = 1
-            b[k] = Tz_0
-        else :
-            A[k,k] = 1
-            b[k] = prm.h*(-prm.T_inf)
-        
-    # Frontière bas
-    j = nz - 1
-    for i in range(0, nr):
-        k = i * nz + j
-        # bas gauche
-        if x[j,i] <= 0 :
-            A[k,k] = 1
-            b[k] = 1 + np.tanh(alpha*(2 * x[j,i] + 1))
-            
-        #bas droite
-        else :
-            A[k,k] = 3
-            A[k,k-1] = -4
-            A[k,k-2] = 1
-            b[k] = Tb_r
+        A[k,k] = -3 + h*2*dr/k    
+        A[k,k+1] = 4
+        A[k,k+2] = -1
+        b[k] = h*2*dr/k
+
+
     
     return A, b # à compléter
 
