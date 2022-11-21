@@ -34,3 +34,6 @@ class Parametres(object):
     def setBi(self,new_Bi):
         self.Bi = new_Bi
         self.h = self.Bi*self.k/(2*self.R)
+        
+    def setCL(self, newCL):
+        self.CL = newCL
