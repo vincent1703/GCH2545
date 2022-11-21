@@ -210,16 +210,27 @@ def mdf_assemblage(X,Y,prm):
     
     
     # Assemblage corps matrice
-    for i in range(1, nr-1):
-        for j in range(1, nz-1):        
-            k =  i*nz + j
+    for i in range(1, nz-1):
+        for j in range(1, nr-1):        
+            k =  i*nr + j
+            ri = R-j*dr
             
-            A[k,k-nz] = -1/(x[j,i] * (2*dr)) + 1/(dr**2) 
-            A[k,k-1] = 1/(dz**2)
-            A[k,k] = -2/(dr**2) - 2/(dz)
-            A[k,k+1] = 1/(dz**2)
-            A[k,k+nz] = 1/(x[j,i] * (2*dr)) + 1/(dr**2)
-    
+            A[k,k+1] = 1/(ri*2*dr) + 1/(dr**2)
+            A[k,k-1] =-1/(ri*2*dr) + 1/(dr**2)
+            A[k,k] = -2/(dr**2) -2/(dz**2)
+            A[k,k+nr] = 1/(dz**2)
+            A[k,k-nr] = 1/(dz**2)
+            b[k] = 0
+            
+# =============================================================================
+#             
+#             A[k,k-nz] = -1/(x[j,i] * (2*dr)) + 1/(dr**2) 
+#             A[k,k-1] = 1/(dz**2)
+#             A[k,k] = -2/(dr**2) - 2/(dz)
+#             A[k,k+1] = 1/(dz**2)
+#             A[k,k+nz] = 1/(x[j,i] * (2*dr)) + 1/(dr**2)
+#     
+# =============================================================================
     
     # Frontière gauche
     i = 0
