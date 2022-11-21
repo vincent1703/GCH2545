@@ -189,7 +189,7 @@ def mdf_assemblage(X,Y,prm):
     R = prm.R
     L = prm.L
     h = prm.h
-    k = prm.k
+    k_cond = prm.k
     Bi = prm.Bi
     CL = prm.CL
     
@@ -242,10 +242,10 @@ def mdf_assemblage(X,Y,prm):
         i = nz - 1
         for j in range(0, nr):
             k = i * nr + j
-            A[k,k] = 3 + 2*dz*h/k
+            A[k,k] = 3 + 2*dz*h/k_cond
             A[k,k-nr] = -4
             A[k,k-2*nr] = 1
-            b[k] = 2*dz*h*(T_inf)/k
+            b[k] = 2*dz*h*(T_inf)/k_cond
     else:
         print("ERREUR: condition limite string non reconnu")
             
@@ -263,10 +263,10 @@ def mdf_assemblage(X,Y,prm):
     j = 0
     for i in range(0, nz):
         k = i * nz + j
-        A[k,k] = -3 + h*2*dr/k    
+        A[k,k] = -3 + h*2*dr/k_cond  
         A[k,k+1] = 4
         A[k,k+2] = -1
-        b[k] = h*2*dr/k
+        b[k] = h*2*dr/k_cond
 
 
     
