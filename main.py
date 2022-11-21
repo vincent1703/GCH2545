@@ -31,8 +31,8 @@ prm = Parametres(L, k, T_inf, T_w, R, h, nr, nz,CL)
 
 
 # Paramètres
-X = [0,prm.R]       #Position selon l'axe des r (rayon)
-Y = [0,prm.L]       #Position selon l'axe des z
+X = [0,prm.L]       #Position selon l'axe des z (rayon)
+Y = [0,prm.R]       #Position selon l'axe des r
 x,y = position(X, Y, prm)
 
 #Conditons limites frontières à z=L
@@ -56,13 +56,35 @@ for Bi_i in list_Bi:
     prm.setBi(Bi_i)
     A,b = mdf_assemblage(X,Y,prm)
     c = np.linalg.solve(A,b) 
-    c_reshaped = c.reshape(prm.nr,prm.nz).transpose()
-    c_R = c_reshaped[-1,:].transpose()
-    c_0 = c_reshaped[0,:].transpose()
+    c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
+    c_R = c_reshaped[:,-1].transpose()
+    c_0 = c_reshaped[:,0].transpose()
     label_0 = "Profil r=0 Bi= "+str(prm.Bi)
     label_R = "Profil r=R Bi= "+str(prm.Bi)
-    plt.plot(x[-1,:],c_R,label_R)  
-    plt.plot(x[0,:],c_0,label_0)  
+    plt.plot(x[:,-1],c_R,label_R)  
+    plt.plot(x[:,0],c_0,label_0)  
 
-plt.savefig("ProfilTemperature.png", dpi=400)
+plt.savefig("ComparaisonProfilTemperature.png", dpi=800)
 plt.show()
+
+
+#Analyse Bonus
+A,b = mdf_assemblage(X,Y,nx,ny,Pe[2],alpha)
+c = np.linalg.solve(A,b) 
+
+
+fig,ax = plt.subplots(nrows=1,ncols=1)
+
+list_Bi = [0.1, 1, 10, 20, 100]
+for Bi_i in list_Bi:
+    prm.setBi(Bi_i)
+    A,b = mdf_assemblage(X,Y,prm)
+    c = np.linalg.solve(A,b)
+    c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
+    fig1 = ax[0].pcolormesh(x,y, c_reshaped)
+    plt.colorbar(fig1, ax=ax[0])
+    ax[0].set_title("Profil Bi="+str(prm.Bi))
+    ax[0].set_xlabel("Position x")
+    ax[0].set_ylabel("Position y")
+    plt.savefig("ProfilConcentration"+str(prm.Bi)+".png", dpi=800)
+    plt.show()
