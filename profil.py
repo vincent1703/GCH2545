@@ -36,22 +36,37 @@ def position(X,Y,prm):
     nz = prm.nz
 
     # Calcul des pas de discretisation
-    dr = (X[1] - X[0]) / (nr-1)
-    dz = (Y[1] - Y[0]) / (nz-1)
+    dr = (Y[1] - Y[0]) / (nr-1)
+    dz = (X[1] - X[0]) / (nz-1)
+
     
-    x = np.zeros([nz,nr])
-    y = np.zeros([nz,nr])
+    x_ligne=np.linspace(X[0], X[1], nz)
+    x = np.zeros([nr,nz])
+    x[:,:] = x_ligne
     
-    x[:,0] = X[0]
-    x[:,-1] = X[1]
-    for i in range(1, nr-1):
-        x[:,i] = x[:,i-1] + dr
+    y_ligne = np.linspace(Y[0], Y[1], nr)
+    y = np.zeros([nr,nz])
+    y[:,:] = y_ligne
+    y = y.T
+    y = np.flipud(y)
+    
         
-    y[0,:] = Y[1]
-    y[-1,:] = Y[0]
-    for j in range(1, nz-1):
-        y[j,:] = y[j-1,:] - dz
-    
+# =============================================================================
+#     ## ANCIEN CODE 
+#     # x = np.zeros([nz,nr])
+#     # y = np.zeros([nz,nr])
+#     
+#     # x[:,0] = X[0]
+#     # x[:,-1] = X[1]
+#     # for i in range(1, nr-1):
+#     #     x[:,i] = x[:,i-1] + dr
+#         
+#     # y[0,:] = Y[1]
+#     # y[-1,:] = Y[0]
+#     # for j in range(1, nz-1):
+#     #     y[j,:] = y[j-1,:] - dz
+#     
+# =============================================================================
     return x, y
     
 
