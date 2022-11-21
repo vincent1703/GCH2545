@@ -13,7 +13,6 @@ class Parametres(object):
     R = 0       # [m] Rayon 
     h = 0       # [W/m^2*K] Coefficient de convection
     Bi = 0      # Nombre de Biot [-]
-    N = 0       # [-] Nombre de points en z
     nr = 0      # Nombre de noeuds (direction radiale, r=0 à r=R)
     nz = 0      # Nombre de noeuds (direction axiale, de z=0 à z=L)
     
@@ -24,7 +23,6 @@ class Parametres(object):
         self.T_w = T_w
         self.R = R
         self.h = h
-        self.N = N
         self.Bi = 2*h*R/k
         self.nr = nr
         self.nz = nz        
