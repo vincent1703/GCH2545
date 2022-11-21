@@ -126,7 +126,7 @@ def mdf_assemblage(X,Y,prm,CL):
         #                 h :[W/m^2*K] Coefficient de convection
         #                 Bi : [Bi] Nombre de Biot
         #                 N : [-] Nombre de points
-        - CL = texte (isole ou convection)
+        - CL = texte ("isole" ou "convection")
 
     Sorties (dans l'ordre énuméré ci-bas):
         - A : Matrice (array)
@@ -195,7 +195,7 @@ def mdf_assemblage(X,Y,prm,CL):
         
     # Frontière bas
     j = nz - 1
-    for i in range(0, nr):
+    for i in range(0, nr):u
         k = i * nz + j
         # bas gauche
         if x[j,i] <= 0 :

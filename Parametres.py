@@ -8,14 +8,16 @@ Created on Sat Nov 19 16:40:11 2022
 class Parametres(object):
     L = 0       # [m] Longueur
     k = 0       # [W/m*K] Conductivité thermique
-    T_inf = 0     # [K] Température de l'air ambiant
+    T_inf = 0   # [K] Température de l'air ambiant
     T_w = 0     # [K] Température de base
     R = 0       # [m] Rayon 
-    h = 0      # [W/m^2*K] Coefficient de convection
-    Bi = 0
+    h = 0       # [W/m^2*K] Coefficient de convection
+    Bi = 0      # Nombre de Biot [-]
     N = 0       # [-] Nombre de points en z
+    nr = 0      # Nombre de noeuds (direction radiale, r=0 à r=R)
+    nz = 0      # Nombre de noeuds (direction axiale, de z=0 à z=L)
     
-    def __init__(self, L, k, T_inf, T_w, R, h, N):
+    def __init__(self, L, k, T_inf, T_w, R, h, N, nr, nz):
         self.L = L
         self.k = k
         self.T_inf = T_inf
@@ -24,6 +26,8 @@ class Parametres(object):
         self.h = h
         self.N = N
         self.Bi = 2*h*R/k
+        self.nr = nr
+        self.nz = nz        
         
     def setBi(self,new_Bi):
         self.Bi = new_Bi

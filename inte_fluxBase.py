@@ -25,6 +25,7 @@ def inte_fluxBase(T,z,r,prm):
         - Valeur numérique de l'intégrale résultante (perte en W)
     """
     "T[r,z]" "A REVOIR LE SENS DE PARCOURS' MAYBE VA DEVOIR FAIRE L'INVERSE"
+    
     # Fonction à écrire
     I=0
     for i in range(1,len(r)):
@@ -33,4 +34,5 @@ def inte_fluxBase(T,z,r,prm):
             f_i = T[i,j+1]-T[i,j-1]
             I += (r[i]-r[i-1])/(z[j]-z[j-1])*r[i]*(f_i_1+f_i)/2
     q = np.pi*prm.k*I
+    
     return q# à compléter
