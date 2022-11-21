@@ -23,8 +23,8 @@ T_w = 100+273.15     # [K] Température de base
 R = .2       # [m] Rayon 
 h = 1      # [W/m^2*K] Coefficient de convection
 Bi = 1
-nr = 100       # [-] Nombre de points en z
-nz = 100
+nr = 10       # [-] Nombre de points en z
+nz = 10
 CL = "isole"
     
 prm = Parametres(L, k, T_inf, T_w, R, h, nr, nz,CL)
@@ -43,19 +43,20 @@ x,y = position(X, Y, prm)
 z = np.linspace(0, prm.L, prm.nz)
 T = ref_analytique(z,prm)
 plt.plot(z, T, '--r', label="Profil analytique")
-list_Bi = [0.1, 1, 10, 20, 100]
+# list_Bi = [0.1, 1, 10, 20, 100]
+list_Bi = [0.1, 1]
 
 for Bi_i in list_Bi:
     prm.setBi(Bi_i)
     A,b = mdf_assemblage(X,Y,prm)
     c = np.linalg.solve(A,b) 
-    c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
-    c_R = c_reshaped[-1,:]
-    c_0 = c_reshaped[0,:]
+    c_reshaped = c.reshape(prm.nz,prm.nr)
+    c_R = c_reshaped[0,:]
+    c_0 = c_reshaped[-1,:]
     label_0 = "Profil r=0 Bi="+str(prm.Bi)
     label_R = "Profil r="+str(prm.R)+" Bi="+str(prm.Bi)
-    plt.plot(x[-1,:],c_R,label=label_R)  
-    plt.plot(x[0,:],c_0,label=label_0)  
+    plt.plot(x[0,:],c_R,label=label_R)  
+    plt.plot(x[-1,:],c_0,label=label_0)  
 
 plt.legend()
 plt.title("Profil de température")

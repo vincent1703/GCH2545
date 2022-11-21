@@ -140,31 +140,25 @@ def mdf_assemblage(X,Y,prm):
             k =  i*nr + j
             ri = R-j*dr
             
-            A[k,k+1] = 1/(ri*2*dr) + 1/(dr**2)
-            A[k,k-1] =-1/(ri*2*dr) + 1/(dr**2)
+            A[k,k+1] = -1/(ri*2*dr) + 1/(dr**2)
+            A[k,k-1] = 1/(ri*2*dr) + 1/(dr**2)
             A[k,k] = -2/(dr**2) -2/(dz**2)
             A[k,k+nr] = 1/(dz**2)
             A[k,k-nr] = 1/(dz**2)
             b[k] = 0
-            
-# =============================================================================
-#             
-#             A[k,k-nz] = -1/(x[j,i] * (2*dr)) + 1/(dr**2) 
-#             A[k,k-1] = 1/(dz**2)
-#             A[k,k] = -2/(dr**2) - 2/(dz)
-#             A[k,k+1] = 1/(dz**2)
-#             A[k,k+nz] = 1/(x[j,i] * (2*dr)) + 1/(dr**2)
-#     
-# =============================================================================
+  
     
     # Frontière gauche
+    
     i = 0
     for j in range(0, nr):
         k = i * nr + j
         A[k,k] = 1
         b[k] = T_w
         
+        
     # Frontière droite
+    
     if CL=="isole":
         i = nz - 1
         for j in range(0, nr):
@@ -173,7 +167,6 @@ def mdf_assemblage(X,Y,prm):
             A[k,k-nr] = -4
             A[k,k-2*nr] = 1
             b[k] = 0
-            
     elif CL=="convection":
         i = nz - 1
         for j in range(0, nr):
@@ -198,12 +191,11 @@ def mdf_assemblage(X,Y,prm):
     # Frontière haut
     j = 0
     for i in range(0, nz):
-        k = i * nz + j
+        k = i * nr + j
         A[k,k] = -3 + h*2*dr/k_cond  
         A[k,k+1] = 4
         A[k,k+2] = -1
-        b[k] = h*2*dr/k_cond
-
+        b[k] = h*2*dr*T_inf/k_cond
 
     
     return A, b # à compléter
