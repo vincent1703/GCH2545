@@ -25,6 +25,6 @@ class Parametres(object):
         self.N = N
         self.Bi = 2*h*R/k
         
-    # def create_parametres(L, k, T_inf, T_w, R, h, N):
-    #     parametres = Parametres(L, k, T_inf, T_w, R, h, N)
-    #     return parametres
+    def setBi(self,new_Bi):
+        self.Bi = new_Bi
+        self.h = self.Bi*self.k/(2*self.R)
