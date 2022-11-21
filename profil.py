@@ -31,10 +31,11 @@ def position(X,Y,prm):
                     [0.5  0.5  0.5]
                     [0    0    0  ]
     """
+    # Recuperation de parametres 
     nr = prm.nr
     nz = prm.nz
 
-    # Fonction à écrire
+    # Calcul des pas de discretisation
     dr = (X[1] - X[0]) / (nr-1)
     dz = (Y[1] - Y[0]) / (nz-1)
     
@@ -111,7 +112,7 @@ def position(X,Y,prm):
     
 #     return T, x      # à compléter
 
-def mdf_assemblage(X,Y,prm,CL):
+def mdf_assemblage(X,Y,prm):
     """ Fonction assemblant la matrice A et le vecteur b pour résoudre notre profil de température
 
     Entrées:
@@ -125,27 +126,31 @@ def mdf_assemblage(X,Y,prm,CL):
         #                 R : [m] Rayon 
         #                 h :[W/m^2*K] Coefficient de convection
         #                 Bi : [Bi] Nombre de Biot
+        #                 nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+        #                 nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
         #                 N : [-] Nombre de points
-        - CL = texte ("isole" ou "convection")
+        #                 CL : condition limite, texte ("isole" ou "convection")
 
     Sorties (dans l'ordre énuméré ci-bas):
         - A : Matrice (array)
         - b : Vecteur (array)
     """
+    # Recuperation des parametres pour calculs
     nr = prm.nr
     nz = prm.nz
-
-    # Fonction à écrire
     
-    # Calculs initiaux
+    N = nr*nz
+    
+    # Calculs des pas de discrtisation
     dr = (X[1] - X[0]) / (nr-1)
     dz = (Y[1] - Y[0]) / (nz-1)
+    
     
     x, y = position(X,Y,prm)
     
     # Initialisation matrice et vecteur
-    A = np.zeros([nr*nz,nr*nz])
-    b = np.zeros(nr*nz)
+    A = np.zeros([N,N])
+    b = np.zeros(N)
     
     # Conditions limites
     Tz_0 = prm.T_w      #Temp à z=0m
@@ -157,6 +162,21 @@ def mdf_assemblage(X,Y,prm,CL):
     # Tt = 1 - np.tanh(alpha)       #bas
     # Tb_r = 0                      #bas right
     
+    
+    
+    # Representation de l'ailette (portion superieure, symetrique)
+    #  
+    #  Condition 
+    #  
+    #  
+    #  
+    #    
+    #  
+    #  __________________________________________________________
+    #  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    #  
+    
+    
     # Assemblage corps matrice
     for i in range(1, nr-1):
         for j in range(1, nz-1):        
@@ -167,6 +187,7 @@ def mdf_assemblage(X,Y,prm,CL):
             A[k,k] = -2/(dr**2) - 2/(dz)
             A[k,k+1] = 1/(dz**2)
             A[k,k+nz] = 1/(x[j,i] * (2*dr)) + 1/(dr**2)
+    
     
     # Frontière gauche
     i = 0
@@ -195,7 +216,7 @@ def mdf_assemblage(X,Y,prm,CL):
         
     # Frontière bas
     j = nz - 1
-    for i in range(0, nr):u
+    for i in range(0, nr):
         k = i * nz + j
         # bas gauche
         if x[j,i] <= 0 :

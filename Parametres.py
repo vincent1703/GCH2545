@@ -15,8 +15,11 @@ class Parametres(object):
     Bi = 0      # Nombre de Biot [-]
     nr = 0      # Nombre de noeuds (direction radiale, r=0 à r=R)
     nz = 0      # Nombre de noeuds (direction axiale, de z=0 à z=L)
+    CL = ""     # Condition limite ("isole" ou "convection")
     
-    def __init__(self, L, k, T_inf, T_w, R, h, nr, nz):
+
+
+    def __init__(self, L, k, T_inf, T_w, R, h, nr, nz,CL):
         self.L = L
         self.k = k
         self.T_inf = T_inf
@@ -26,6 +29,7 @@ class Parametres(object):
         self.Bi = 2*h*R/k
         self.nr = nr
         self.nz = nz        
+        self.CL = CL
         
     def setBi(self,new_Bi):
         self.Bi = new_Bi
