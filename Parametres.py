@@ -16,7 +16,7 @@ class Parametres(object):
     nr = 0      # Nombre de noeuds (direction radiale, r=0 à r=R)
     nz = 0      # Nombre de noeuds (direction axiale, de z=0 à z=L)
     
-    def __init__(self, L, k, T_inf, T_w, R, h, N, nr, nz):
+    def __init__(self, L, k, T_inf, T_w, R, h, nr, nz):
         self.L = L
         self.k = k
         self.T_inf = T_inf

@@ -14,6 +14,7 @@ except:
 from inte_fluxBase import inte_fluxBase
 from inte_fluxContour import inte_fluxContour
 from analytique import ref_analytique
+
 L = 1       # [m] Longueur
 k = 1       # [W/m*K] Conductivité thermique
 T_inf = 1     # [K] Température de l'air ambiant
@@ -21,9 +22,10 @@ T_w = 1     # [K] Température de base
 R = 1       # [m] Rayon 
 h = 1      # [W/m^2*K] Coefficient de convection
 Bi = 1
-N = 10       # [-] Nombre de points en z
+nr = 10       # [-] Nombre de points en z
+nz = 10
     
-prm = Parametres(L, k, T_inf, T_w, R, h, N)
+prm = Parametres(L, k, T_inf, T_w, R, h, nr, nz)
 
 
 # Paramètres
