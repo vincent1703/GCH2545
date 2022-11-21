@@ -49,8 +49,6 @@ plt.legend()
 plt.title("Profil de température")
 plt.ylabel("Température (K)")
 plt.xlabel("Position (m)")
-plt.savefig("ProfilTemperature.png", dpi=400)
-plt.show()
 
 list_Bi = [0.1, 1, 10, 20, 100]
 
@@ -65,3 +63,6 @@ for Bi_i in list_Bi:
     label_R = "Profil r=R Bi= "+str(prm.Bi)
     plt.plot(x[-1,:],c_R,label_R)  
     plt.plot(x[0,:],c_0,label_0)  
+
+plt.savefig("ProfilTemperature.png", dpi=400)
+plt.show()
