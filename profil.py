@@ -35,22 +35,26 @@ def position(X,Y,prm):
     nr = prm.nr
     nz = prm.nz
 
-    # Calcul des pas de discretisation
-    dr = (Y[1] - Y[0]) / (nr-1)
-    dz = (X[1] - X[0]) / (nz-1)
+    # # Calcul des pas de discretisation
+    # dr = (Y[1] - Y[0]) / (nr-1)
+    # dz = (X[1] - X[0]) / (nz-1)
 
     
-    x_ligne=np.linspace(X[0], X[1], nz)
-    x = np.zeros([nr,nz])
-    x[:,:] = x_ligne
+    # x_ligne=np.linspace(X[0], X[1], nz)
+    # x = np.zeros([nr,nz])
+    # x[:,:] = x_ligne
     
-    y_ligne = np.linspace(Y[0], Y[1], nr)
-    y = np.zeros([nr,nz])
-    y[:,:] = y_ligne
-    y = y.T
-    y = np.flipud(y)
+    # y_ligne = np.linspace(Y[0], Y[1], nr)
+    # y = np.zeros([nr,nz])
+    # y[:,:] = y_ligne
+    # y = y.T
+    # y = np.flipud(y)
     
-    return x, y
+    x = np.linspace(X[0], X[1], nz)
+    y = np.linspace(Y[1], Y[0], nr) 
+    xv, yv = np.meshgrid(x, y)
+    
+    return xv, yv
 
 def mdf_assemblage(X,Y,prm):
     """ Fonction assemblant la matrice A et le vecteur b pour résoudre notre profil de température
@@ -121,8 +125,8 @@ def mdf_assemblage(X,Y,prm):
     N = nr*nz
     
     # Calculs des pas de discrtisation
-    dr = (X[1] - X[0]) / (nr-1)
-    dz = (Y[1] - Y[0]) / (nz-1)
+    dr = (Y[1] - Y[0]) / (nr-1)
+    dz = (X[1] - X[0]) / (nz-1)
     
     # Matrices de position pour indexation
     x, y = position(X,Y,prm)
@@ -132,8 +136,6 @@ def mdf_assemblage(X,Y,prm):
     b = np.zeros(N)
 
 
-    
-    
     # Assemblage corps matrice
     for i in range(1, nz-1):
         for j in range(1, nr-1):        
@@ -145,11 +147,9 @@ def mdf_assemblage(X,Y,prm):
             A[k,k] = -2/(dr**2) -2/(dz**2)
             A[k,k+nr] = 1/(dz**2)
             A[k,k-nr] = 1/(dz**2)
-            b[k] = 0
   
     
     # Frontière gauche
-    
     i = 0
     for j in range(0, nr):
         k = i * nr + j
@@ -161,7 +161,7 @@ def mdf_assemblage(X,Y,prm):
     
     if CL=="isole":
         i = nz - 1
-        for j in range(0, nr):
+        for j in range(1, nr-1):
             k = i * nr + j
             A[k,k] = 3
             A[k,k-nr] = -4
@@ -191,11 +191,16 @@ def mdf_assemblage(X,Y,prm):
     # Frontière haut
     j = 0
     for i in range(0, nz):
+        # k = i * nr + j
+        # A[k,k] = -3 + h*2*dr/k_cond  
+        # A[k,k+1] = 4
+        # A[k,k+2] = -1
+        # b[k] = h*2*dr*T_inf/k_cond
         k = i * nr + j
-        A[k,k] = -3 + h*2*dr/k_cond  
-        A[k,k+1] = 4
-        A[k,k+2] = -1
-        b[k] = h*2*dr*T_inf/k_cond
+        A[k,k] = -3*k/(2*dz)-h 
+        A[k,k+1] = 4*k/(2*dz)
+        A[k,k+2] = -1/(2*dz)
+        b[k] = -T_inf*h
 
     
     return A, b # à compléter
