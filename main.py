@@ -44,8 +44,8 @@ x,y = position(X, Y, prm)
 z = np.linspace(0, prm.L, prm.nz)
 T = ref_analytique(z,prm)
 plt.plot(z, T, '--r', label="Profil analytique")
-#list_Bi = [0.1, 1, 10, 20, 100]
-list_Bi = [20]
+list_Bi = [0.1, 1, 10, 20, 100]
+#list_Bi = [20]
 
 for Bi_i in list_Bi:
     prm.setBi(Bi_i)
@@ -73,21 +73,23 @@ plt.show()
 # list_Bi = [0.1, 1, 10, 20, 100]
 # z = np.linspace(0, prm.L, prm.nz)
 
+# T = prm.T_w
+
 # q_contour_isole = inte_fluxContour(T,z,prm)
 # prm.setCL("convection")
 # q_contour_convection = inte_fluxContour(T,z,prm)
-#=========================Analyse Bonus=========================
-# list_Bi = [0.1, 1, 10, 20, 100]
-# for Bi_i in list_Bi:
-#     prm.setBi(Bi_i)
-#     A,b = mdf_assemblage(X,Y,prm)
-#     c = np.linalg.solve(A,b)
-#     c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
-#     fig,ax = plt.subplots(nrows=1,ncols=1)
-#     fig1 = ax.pcolormesh(x,y, c_reshaped)
-#     plt.colorbar(fig1, ax=ax)
-#     ax.set_title("Profil Bi="+str(prm.Bi))
-#     ax.set_xlabel("Position z")
-#     ax.set_ylabel("Position r")
-#     plt.savefig("Profil2D_Bi"+str(prm.Bi)+".png", dpi=400)
-#     plt.show()
+# # =========================Analyse Bonus=========================
+list_Bi = [0.1, 1, 10, 20, 100]
+for Bi_i in list_Bi:
+    prm.setBi(Bi_i)
+    A,b = mdf_assemblage(X,Y,prm)
+    c = np.linalg.solve(A,b)
+    c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
+    fig,ax = plt.subplots(nrows=1,ncols=1)
+    fig1 = ax.pcolormesh(x,y, c_reshaped)
+    plt.colorbar(fig1, ax=ax)
+    ax.set_title("Profil Bi="+str(prm.Bi))
+    ax.set_xlabel("Position z")
+    ax.set_ylabel("Position r")
+    plt.savefig("Profil2D_Bi"+str(prm.Bi)+".png", dpi=400)
+    plt.show()

@@ -199,19 +199,21 @@ def mdf_assemblage(X,Y,prm):
         
         
         # k = i * nr + j
-        # A[k,k] = -3*k_cond/(2*dz)-h 
-        # A[k,k+1] = 4*k_cond/(2*dz)
+        # A[k,k] = -3*k/(2*dz)-h 
+        # A[k,k+1] = 4*k/(2*dz)
         # A[k,k+2] = -1/(2*dz)
         # b[k] = -T_inf*h
         
         # k = i * nr + j
+        
         # A[k,k] =  3*k_cond - 2*h*dr
         # A[k,k+1] = -4*k_cond
         # A[k,k+2] = k_cond
         # b[k] = -T_inf*h*dr*2
         
         k = i * nr + j
-        A[k,k] =  3 + 2*h*dr/k_cond
+        
+        A[k,k] =  3 - 2*h*dr
         A[k,k+1] = -4
         A[k,k+2] = 1
         b[k] = (-T_inf*h*2*dr)/(-k_cond)
