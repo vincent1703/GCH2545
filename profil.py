@@ -169,7 +169,7 @@ def mdf_assemblage(X,Y,prm):
             b[k] = 0
     elif CL=="convection":
         i = nz - 1
-        for j in range(0, nr):
+        for j in range(1, nr-1):
             k = i * nr + j
             A[k,k] = 3 + 2*dz*h/k_cond
             A[k,k-nr] = -4
@@ -190,7 +190,7 @@ def mdf_assemblage(X,Y,prm):
             
     # Frontière haut
     j = 0
-    for i in range(0, nz):
+    for i in range(1, nz):
         # k = i * nr + j
         # A[k,k] = -3 + h*2*dr/k_cond  
         # A[k,k+1] = 4

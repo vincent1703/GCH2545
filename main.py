@@ -23,8 +23,8 @@ T_w = 100+273.15     # [K] Température de base
 R = .2       # [m] Rayon 
 h = 1      # [W/m^2*K] Coefficient de convection
 Bi = 1
-nr = 100       # [-] Nombre de points en z
-nz = 100
+nr = 20      # [-] Nombre de points en z
+nz = 20
 CL = "isole"
     
 prm = Parametres(L, k, T_inf, T_w, R, h, nr, nz,CL)
@@ -42,7 +42,6 @@ x,y = position(X, Y, prm)
 
 #=========================1ere analyse=========================
 z = np.linspace(0, prm.L, prm.nz)
-T = ref_analytique(z,prm)
 #plt.plot(z, T, '--r', label="Profil analytique")
 list_Bi = [0.05,0.1, 1, 10, 20, 100]
 #list_Bi = [20]
@@ -71,33 +70,61 @@ for Bi_i in list_Bi:
     plt.show()
 
 #=========================2e analyse - Base=========================
-
-
-
-#=========================2e analyse - Contour=========================
 list_Bi = [0.1, 1, 10, 20, 100]
-z = np.linspace(0, prm.L, prm.nz)
-
-T = prm.T_w
-
-q_contour_isole = inte_fluxContour(T,z,prm)
-plt.plot(z, q_contour_isole, '--r', label="q contour isole")
-prm.setCL("convection")
-q_contour_convection = inte_fluxContour(T,z,prm)
-plt.plot(z, q_contour_convection, '--b', label="q contour convection")
-plt.show()
-# # =========================Analyse Bonus=========================
-list_Bi = [0.1, 1, 10, 20, 100]
+r = np.linspace(0, prm.R, prm.nr)
 for Bi_i in list_Bi:
     prm.setBi(Bi_i)
+    prm.setCL("isole")
     A,b = mdf_assemblage(X,Y,prm)
-    c = np.linalg.solve(A,b)
+    c = np.linalg.solve(A,b) 
     c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
-    fig,ax = plt.subplots(nrows=1,ncols=1)
-    fig1 = ax.pcolormesh(x,y, c_reshaped)
-    plt.colorbar(fig1, ax=ax)
-    ax.set_title("Profil Bi="+str(prm.Bi))
-    ax.set_xlabel("Position z")
-    ax.set_ylabel("Position r")
-    plt.savefig("Profil2D_Bi"+str(prm.Bi)+".png", dpi=400)
-    plt.show()
+    T = c_reshaped
+    q_base_isole = inte_fluxBase(T,r,prm)
+    print("calcul flux a la base de l'ailette avec condition isolee:" + str(q_base_isole))
+    prm.setCL("convection")
+    A,b = mdf_assemblage(X,Y,prm)
+    c = np.linalg.solve(A,b) 
+    c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
+    T2 = c_reshaped
+    q_base_convection = inte_fluxBase(T2,r,prm)
+    print("calcul flux a la base de l'ailette avec condition convection:" + str(q_base_convection))
+#=========================2e analyse - Contour=========================
+# list_Bi = [0.1, 1, 10, 20, 100]
+# z = np.linspace(0, prm.L, prm.nz)
+# for Bi_i in list_Bi:
+#     prm.setBi(Bi_i)
+#     prm.setCL("isole")
+#     A,b = mdf_assemblage(X,Y,prm)
+#     c = np.linalg.solve(A,b) 
+#     c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
+#     T = c_reshaped
+#     q_contour_isole = inte_fluxContour(T,z,prm)
+#     print("calcul flux au contour de l'ailette avec condition isole:" + str(q_contour_isole))
+#     prm.setCL("convection")
+#     A,b = mdf_assemblage(X,Y,prm)
+#     c = np.linalg.solve(A,b) 
+#     c_reshaped = c.reshape(prm.nz,prm.nr)
+#     T = c_reshaped
+#     q_contour_convection = inte_fluxContour(T,z,prm)
+#     print("calcul flux au contour de l'ailette avec condition convection:" + str(q_contour_convection))
+    # T = ref_analytique(z,prm)
+    # q_analytique= inte_fluxContour(T, z, prm)
+    # print("calcul flux au contour de l'ailette avec condition convection ANALYTIQUE:" + str(q_analytique))
+# # =========================Analyse Bonus=========================
+list_Bi = [0.1, 1, 10, 20, 100]
+condition_limite = ["isole","convection"]
+for Bi_i in list_Bi:
+    for cl in condition_limite:
+        prm.setBi(Bi_i)
+        prm.setCL(cl)
+        A,b = mdf_assemblage(X,Y,prm)
+        c = np.linalg.solve(A,b)
+        c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
+        fig,ax = plt.subplots(nrows=1,ncols=1)
+        fig1 = ax.pcolormesh(x,y, c_reshaped)
+        plt.colorbar(fig1, ax=ax)
+        ax.set_title("Profil Bi="+str(prm.Bi)+"CL="+str(prm.CL))
+        ax.set_xlabel("Position z")
+        ax.set_ylabel("Position r")
+        plt.savefig("Profil2D_Bi"+str(prm.Bi)+"_"+str(prm.CL)+".png", dpi=400)
+        plt.show()
