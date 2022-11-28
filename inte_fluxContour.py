@@ -45,7 +45,7 @@ def inte_fluxContour(T,z,r,bout,D,prm):
     
     if prm.CL=="convection" and bout == True and D==2 :
         #print(r*prm.h*(T[:,-1]-prm.T_inf))
-
+        
         q_bout = 2*np.pi*inte_trapz(r, r*prm.h*(T[:,-1]-prm.T_inf))
         q=q+q_bout
         

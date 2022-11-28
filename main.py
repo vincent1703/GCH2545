@@ -69,7 +69,7 @@ for Bi_i in list_Bi:
 
 #=========================2e analyse - Base=========================
 list_Bi = np.linspace(.01,100,100)
-list_Bi = [0.1, 1,100]
+#list_Bi = [0.1, 1,100]
 r = np.linspace(prm.R, 0, prm.nr)
 q_base_isole = []
 q_base_convection = []
@@ -87,19 +87,19 @@ for i in range(len(list_Bi)):
     c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
     T = c_reshaped
     q_base_convection.append(inte_fluxBase(T,r,prm))
-    print("calcul fluxBASE condition isole:" + str(q_base_isole[i]))
-    print("calcul fluxBASE condition conv:" + str(q_base_convection[i]))
     
-    
+plt.title("Q en fonction du nombre de Bi et flux base")    
 plt.plot(list_Bi,q_base_isole,label="cond isole")  
 plt.plot(list_Bi,q_base_convection,label="cond convection")  
 plt.legend()
-plt.savefig("q.png", dpi=400)
+plt.savefig("q_fluxBase.png", dpi=400)
 plt.show()
 #=========================2e analyse - Contour=========================
-#list_Bi = [0.1, 1, 10, 20, 100]
-list_Bi = [0.1, 1,100]
-
+list_Bi = np.linspace(.01,100,100)
+#list_Bi = [0.1, 1,100]
+q_contour_isole = []
+q_contour_convection = []
+q_analytique=[]
 z = np.linspace(0, prm.L, prm.nz)
 for Bi_i in list_Bi:
     bout = True
@@ -110,21 +110,27 @@ for Bi_i in list_Bi:
     A,b = mdf_assemblage(X,Y,prm)
     c = np.linalg.solve(A,b) 
     c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
-    T = c_reshaped
-    q_contour_isole = inte_fluxContour(T,z,r,bout,D,prm)
-    print("calcul flux au contour de l'ailette avec condition isole:" + str(q_contour_isole))
+    T= c_reshaped
+    q_contour_isole.append(inte_fluxContour(T,z,r,bout,D,prm))
     prm.setCL("convection")
     A,b = mdf_assemblage(X,Y,prm)
     c = np.linalg.solve(A,b) 
-    c_reshaped = c.reshape(prm.nz,prm.nr)
+    c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
     T = c_reshaped
-    q_contour_convection = inte_fluxContour(T,z,r,bout,D,prm)
-    print("calcul flux au contour de l'ailette avec condition convection:" + str(q_contour_convection))
+    q_contour_convection.append(inte_fluxContour(T,z,r,bout,D,prm))
     D=1
     bout = False
     T = ref_analytique(z,prm)
-    q_analytique= inte_fluxContour(T, z,r,bout,D, prm)
-    print("calcul flux au contour de l'ailette avec condition convection ANALYTIQUE:" + str(q_analytique))
+    q_analytique.append(inte_fluxContour(T, z,r,bout,D, prm))
+
+plt.title("Q en fonction du nombre de Bi et flux contour")    
+plt.plot(list_Bi,q_contour_isole,label="cond isole")  
+plt.plot(list_Bi,q_contour_convection,'--', color="orange",label="cond convection + bout")  
+plt.plot(list_Bi,q_analytique,'--r',label="analytique")  
+plt.legend()
+plt.savefig("q_fluxContour.png", dpi=400)
+plt.show()
+
 # # =========================Analyse Bonus=========================
 #list_Bi = [0.1, 1, 10, 20, 100]
 list_Bi = [0.1, 1]
