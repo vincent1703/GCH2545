@@ -55,7 +55,7 @@ def inte_fluxBase(T,r,prm):
     
     dz=prm.L/(prm.nz-1)
     dtdz=(-T[:,2]+4*T[:,1]-3*T[:,0])/(2*dz)
-    q=2*np.pi*inte_trapz(r,prm.k*r*(dtdz))
+    q=2*np.pi*inte_trapz(r,-prm.k*r*(dtdz))
     
     
     return q

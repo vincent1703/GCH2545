@@ -11,6 +11,6 @@ def inte_trapz(x,y):
     
     I=0
     for i in range(len(x)-1):
-        I+= (x[i+1]-x[i])*(y[i]+y[i+1])/2
+        I+= np.abs(x[i+1]-x[i])*(y[i]+y[i+1])/2
         
     return I

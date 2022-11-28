@@ -6,8 +6,9 @@ Created on Sat Nov 19 17:14:55 2022
 """
 
 import numpy as np
+from inte_trapz import inte_trapz
 
-def inte_fluxContour(T,z,prm):
+def inte_fluxContour(T,z,r,bout,D,prm):
     """Fonction qui intègre la convection sur la surface de l'ailette.
 
     Entrées:
@@ -35,9 +36,20 @@ def inte_fluxContour(T,z,prm):
     # q = 2*np.pi*prm.R*I
     # return q# à compléter
     
-    I=0
+    if D==2:
+        q = 2*np.pi*prm.R*inte_trapz(z, prm.h*(T[0,:]-prm.T_inf))
+    elif D==1:
+        q = 2*np.pi*prm.R*inte_trapz(z, prm.h*(T-prm.T_inf))
+    else:
+        print("Specifiez le nb de dimensions de l'analyse.")
     
-    for i in range(1,len(z)):
-        q=1
+    if prm.CL=="convection" and bout == True and D==2 :
+        #print(r*prm.h*(T[:,-1]-prm.T_inf))
+
+        q_bout = 2*np.pi*inte_trapz(r, r*prm.h*(T[:,-1]-prm.T_inf))
+        q=q+q_bout
+        
+        #print("q_bout: " + str(q_bout))    
     
     return q
+
