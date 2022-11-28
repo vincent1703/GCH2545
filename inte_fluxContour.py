@@ -44,7 +44,6 @@ def inte_fluxContour(T,z,r,bout,D,prm):
         q = 2*np.pi*prm.R*inte_trapz(z, prm.h*(T[0,:]-prm.T_inf))
     elif D==1:
         q = 2*np.pi*prm.R*inte_trapz(z, prm.h*(T-prm.T_inf))
-        print(T-prm.T_inf)
     else:
         print("Specifiez le nb de dimensions de l'analyse (1 ou 2)")
     
