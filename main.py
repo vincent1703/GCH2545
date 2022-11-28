@@ -130,10 +130,21 @@ plt.plot(list_Bi,q_analytique,'--r',label="analytique")
 plt.legend()
 plt.savefig("q_fluxContour.png", dpi=400)
 plt.show()
+# # =========================2e analyse - Erreur =========================
+erreur=[]
+for i in range(len(list_Bi)):
+    erreur.append(abs(q_analytique[i]-q_contour_isole[i]))
+plt.title("Erreur entre analytique et isole flux contour")    
+plt.plot(list_Bi,erreur,label="erreur")  
+plt.legend()
+plt.savefig("q_erreur_fluxContour.png", dpi=400)
+plt.show()
+
+
 
 # # =========================Analyse Bonus=========================
-#list_Bi = [0.1, 1, 10, 20, 100]
-list_Bi = [0.1, 1]
+list_Bi = [0.1, 1, 10, 20, 100]
+#list_Bi = [0.1, 1]
 
 condition_limite = ["isole","convection"]
 for Bi_i in list_Bi:
