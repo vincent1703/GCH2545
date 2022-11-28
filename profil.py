@@ -15,11 +15,13 @@ def position(X,Y,prm):
         #                 R : [m] Rayon 
         #                 h :[W/m^2*K] Coefficient de convection
         #                 Bi : [Bi] Nombre de Biot
+        #                 nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+        #                 nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
         #                 N : [-] Nombre de points 
 
     Sorties (dans l'ordre énuméré ci-bas):
-        - x : Matrice (array) de dimension (nz x nr) qui contient la position en r
-        - y : Matrice (array) de dimension (nz x nr) qui contient la position en z
+        - xv : Matrice (array) de dimension (nz x nr) qui contient la position en r
+        - yv : Matrice (array) de dimension (nz x nr) qui contient la position en z
             * Exemple d'une matrice position :
             * Si X = [-1, 1] et Y = [0, 1]
             * Avec nr = 3 et nz = 3
@@ -35,20 +37,6 @@ def position(X,Y,prm):
     nr = prm.nr
     nz = prm.nz
 
-    # # Calcul des pas de discretisation
-    # dr = (Y[1] - Y[0]) / (nr-1)
-    # dz = (X[1] - X[0]) / (nz-1)
-
-    
-    # x_ligne=np.linspace(X[0], X[1], nz)
-    # x = np.zeros([nr,nz])
-    # x[:,:] = x_ligne
-    
-    # y_ligne = np.linspace(Y[0], Y[1], nr)
-    # y = np.zeros([nr,nz])
-    # y[:,:] = y_ligne
-    # y = y.T
-    # y = np.flipud(y)
     
     x = np.linspace(X[0], X[1], nz)
     y = np.linspace(Y[1], Y[0], nr) 
@@ -217,5 +205,5 @@ def mdf_assemblage(X,Y,prm):
         b[k] = (-T_inf*h*2*dr)/(-k_cond)
 
     
-    return A, b # à compléter
+    return A, b 
 

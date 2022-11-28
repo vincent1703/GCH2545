@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Nov 19 16:40:11 2022
-
-@author: Étienne
-"""
 
 class Parametres(object):
     L = 0       # [m] Longueur
@@ -31,9 +26,13 @@ class Parametres(object):
         self.nz = nz        
         self.CL = CL
         
+    # Fonction permettant la modification du nombre de Biot qui recalcule et 
+    # definit le h correspondant 
     def setBi(self,new_Bi):
         self.Bi = new_Bi
         self.h = self.Bi*self.k/(2*self.R)
         
+    # Fonction permettant la modification de la condition limite au bout de 
+    # l'ailette
     def setCL(self, newCL):
         self.CL = newCL
