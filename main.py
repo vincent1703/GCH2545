@@ -70,19 +70,26 @@ for Bi_i in list_Bi:
 #=========================2e analyse - Base=========================
 list_Bi = np.linspace(.01,100,100)
 r = np.linspace(prm.R, 0, prm.nr)
-condition_limite = ["isole","convection"]
-
-for i in range(len(list_Bi)-1):
+q_base_isole = []
+q_base_convection = []
+for i in range(len(list_Bi)):
     prm.setBi(list_Bi[i])
+    prm.setCL("isole")
     A,b = mdf_assemblage(X,Y,prm)
     c = np.linalg.solve(A,b) 
     c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
     T = c_reshaped
-    q_base = inte_fluxBase(T,r,prm)
-    label_cl = "condition"+str(prm.CL)
-    plt.plot(prm.Bi,q_base,'ro',label=label_cl)  
-    print("calcul flux a la base de l'ailette avec condition isole:" + str(q_base))
-
+    q_base_isole.append(inte_fluxBase(T,r,prm))
+    prm.setCL("convection")
+    A,b = mdf_assemblage(X,Y,prm)
+    c = np.linalg.solve(A,b) 
+    c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
+    T = c_reshaped
+    q_base_convection.append(inte_fluxBase(T,r,prm))
+    
+plt.plot(list_Bi,q_base_isole,label="cond isole")  
+plt.plot(list_Bi,q_base_convection,label="cond convection")  
+plt.legend()
 plt.savefig("q.png", dpi=400)
 plt.show()
 #=========================2e analyse - Contour=========================
