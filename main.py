@@ -60,7 +60,8 @@ for Bi_i in list_Bi:
     label_R = "Profil r="+str(prm.R)
     plt.plot(x[0,:],c_R,label=label_R)  
     plt.plot(x[-1,:],c_0,label=label_0)  
-    if prm.Bi<0.1:
+    if prm.Bi<200:
+        T = ref_analytique(z,prm)
         plt.plot(z, T, '--r', label="Profil analytique")
     plt.legend()
     plt.title("Profil de température Bi: "+str(prm.Bi))
@@ -69,25 +70,22 @@ for Bi_i in list_Bi:
     plt.savefig("ComparaisonProfilTemperature_Bi"+str(prm.Bi)+".png", dpi=400)
     plt.show()
 
-# plt.legend()
-# plt.title("Profil de température")
-# plt.ylabel("Température (K)")
-# plt.xlabel("Position z (m)")
-# plt.savefig("ComparaisonProfilTemperature.png", dpi=400)
-# plt.show()
 #=========================2e analyse - Base=========================
 
 
 
 #=========================2e analyse - Contour=========================
-# list_Bi = [0.1, 1, 10, 20, 100]
-# z = np.linspace(0, prm.L, prm.nz)
+list_Bi = [0.1, 1, 10, 20, 100]
+z = np.linspace(0, prm.L, prm.nz)
 
-# T = prm.T_w
+T = prm.T_w
 
-# q_contour_isole = inte_fluxContour(T,z,prm)
-# prm.setCL("convection")
-# q_contour_convection = inte_fluxContour(T,z,prm)
+q_contour_isole = inte_fluxContour(T,z,prm)
+plt.plot(z, q_contour_isole, '--r', label="q contour isole")
+prm.setCL("convection")
+q_contour_convection = inte_fluxContour(T,z,prm)
+plt.plot(z, q_contour_convection, '--b', label="q contour convection")
+plt.show()
 # # =========================Analyse Bonus=========================
 list_Bi = [0.1, 1, 10, 20, 100]
 for Bi_i in list_Bi:
