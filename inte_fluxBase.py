@@ -27,12 +27,20 @@ def inte_fluxBase(T,z,r,prm):
     "T[r,z]" "A REVOIR LE SENS DE PARCOURS' MAYBE VA DEVOIR FAIRE L'INVERSE"
     
     # Fonction à écrire
-    I=0
-    for i in range(1,len(r)):
-        for j in range(1,len(z)):
-            f_i_1 = T[i-1,j+1]-T[i-1,j-1]
-            f_i = T[i,j+1]-T[i,j-1]
-            I += (r[i]-r[i-1])/(z[j]-z[j-1])*r[i]*(f_i_1+f_i)/2
-    q = np.pi*prm.k*I
+    # I=0
+    # for i in range(1,len(r)):
+    #     for j in range(1,len(z)):
+    #         f_i_1 = T[i-1,j+1]-T[i-1,j-1]
+    #         f_i = T[i,j+1]-T[i,j-1]
+    #         I += (r[i]-r[i-1])/(z[j]-z[j-1])*r[i]*(f_i_1+f_i)/2
+    # q = np.pi*prm.k*I
     
-    return q# à compléter
+    # Calcul de la 
+    I=0
+    dz = prm.L/(prm.nz-1)
+    for i in range(1,len(r)):
+        dtdz = (-T[prm.nr*2,i]+4*T[prm.nr,i]-3*T[0,i])/(2*dz)
+        I=I+r(i)*dtdz
+    
+    q=2*np.pi*I*prm.k
+    return q
