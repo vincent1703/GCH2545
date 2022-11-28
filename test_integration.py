@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Nov 28 15:07:29 2022
 
-@author: Vincent
-"""
 
-# Fonction servant à tester la fonction d'intgration trapezoidale
+# Fonction de test servant à tester la fonction d'intgration trapezoidale
 # Comparaison avec l'integration d'un polynome de degre 3 analytiquement avec 
-# erreur sous le seuil prescrit
+# erreur sous le seuil prescrit. Aucune entree ou sortie
 
 import numpy as np
 from inte_trapz import inte_trapz
