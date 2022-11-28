@@ -43,8 +43,8 @@ x,y = position(X, Y, prm)
 #=========================1ere analyse=========================
 z = np.linspace(0, prm.L, prm.nz)
 T = ref_analytique(z,prm)
-plt.plot(z, T, '--r', label="Profil analytique")
-list_Bi = [0.1, 1, 10, 20, 100]
+#plt.plot(z, T, '--r', label="Profil analytique")
+list_Bi = [0.05,0.1, 1, 10, 20, 100]
 #list_Bi = [20]
 
 for Bi_i in list_Bi:
@@ -54,17 +54,27 @@ for Bi_i in list_Bi:
     c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
     c_R = c_reshaped[0,:].transpose()
     c_0 = c_reshaped[-1,:].transpose()
-    label_0 = "Profil r=0 Bi="+str(prm.Bi)
-    label_R = "Profil r="+str(prm.R)+" Bi="+str(prm.Bi)
+    # label_0 = "Profil r=0 "+str(prm.Bi)
+    # label_R = "Profil r="+str(prm.R)+" Bi="+str(prm.Bi)
+    label_0 = "Profil r=0 "
+    label_R = "Profil r="+str(prm.R)
     plt.plot(x[0,:],c_R,label=label_R)  
     plt.plot(x[-1,:],c_0,label=label_0)  
+    if prm.Bi<0.1:
+        plt.plot(z, T, '--r', label="Profil analytique")
+    plt.legend()
+    plt.title("Profil de température Bi: "+str(prm.Bi))
+    plt.ylabel("Température (K)")
+    plt.xlabel("Position z (m)")
+    plt.savefig("ComparaisonProfilTemperature_Bi"+str(prm.Bi)+".png", dpi=400)
+    plt.show()
 
-plt.legend()
-plt.title("Profil de température")
-plt.ylabel("Température (K)")
-plt.xlabel("Position z (m)")
-plt.savefig("ComparaisonProfilTemperature.png", dpi=400)
-plt.show()
+# plt.legend()
+# plt.title("Profil de température")
+# plt.ylabel("Température (K)")
+# plt.xlabel("Position z (m)")
+# plt.savefig("ComparaisonProfilTemperature.png", dpi=400)
+# plt.show()
 #=========================2e analyse - Base=========================
 
 
