@@ -39,8 +39,10 @@ def inte_fluxBase(T,z,r,prm):
     I=0
     dz = prm.L/(prm.nz-1)
     for i in range(1,len(r)):
-        dtdz = (-T[prm.nr*2,i]+4*T[prm.nr,i]-3*T[0,i])/(2*dz)
-        I=I+r(i)*dtdz
+        dtdz_i1 = (-T[prm.nr*2,i-1]+4*T[prm.nr,i-1]-3*T[0,i-1])/(2*dz)
+        dtdz_i = (-T[prm.nr*2,i]+4*T[prm.nr,i]-3*T[0,i])/(2*dz)
+        I=I+r(i)*(dtdz_i+dtdz_i1)/prm.dr
     
     q=2*np.pi*I*prm.k
+    
     return q
