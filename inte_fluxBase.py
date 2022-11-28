@@ -5,8 +5,9 @@ Created on Sat Nov 19 17:12:07 2022
 @author: Étienne
 """
 import numpy as np
+from inte_trapz import inte_trapz
 
-def inte_fluxBase(T,z,r,prm):
+def inte_fluxBase(T,r,prm):
     """Fonction qui intègre la convection sur la surface de l'ailette.
 
     Entrées:
@@ -24,6 +25,11 @@ def inte_fluxBase(T,z,r,prm):
     Sortie:
         - Valeur numérique de l'intégrale résultante (perte en W)
     """
+   
+    
+   
+    
+   
     "T[r,z]" "A REVOIR LE SENS DE PARCOURS' MAYBE VA DEVOIR FAIRE L'INVERSE"
     
     # Fonction à écrire
@@ -35,14 +41,21 @@ def inte_fluxBase(T,z,r,prm):
     #         I += (r[i]-r[i-1])/(z[j]-z[j-1])*r[i]*(f_i_1+f_i)/2
     # q = np.pi*prm.k*I
     
-    # Calcul de la 
-    I=0
-    dz = prm.L/(prm.nz-1)
-    for i in range(1,len(r)):
-        dtdz_i1 = (-T[2,i-1]+4*T[1,i-1]-3*T[0,i-1])/(2*dz)
-        dtdz_i = (-T[2*2,i]+4*T[1,i]-3*T[0,i])/(2*dz)
-        I=I+r(i)*(dtdz_i+dtdz_i1)/prm.dr
+    # # Calcul de la 
+    # I=0
+    # dz = prm.L/(prm.nz-1)
+    # dr= prm.R/(prm.nr-1)
+    # for i in range(1,len(r)):
+    #     dtdz_i1 = (-T[2,i-1]+4*T[1,i-1]-3*T[0,i-1])*r[i-1]/(2*dz)
+    #     dtdz_i = (-T[2,i]+4*T[1,i]-3*T[0,i])*r[i]/(2*dz)
+    #     I =+ (dtdz_i+dtdz_i1)*dr
     
-    q=2*np.pi*I*prm.k
+    # q=2*np.pi*I*prm.k
+    
+    
+    dz=prm.L/(prm.nz-1)
+    dtdz=(-T[:,2]+4*T[:,1]-3*T[:,0])/(2*dz)
+    q=2*np.pi*inte_trapz(r,prm.k*r*(dtdz))
+    
     
     return q
