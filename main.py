@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Nov 19 15:34:32 2022
-
-@author: Étienne
-"""
 import numpy as np
 import matplotlib.pyplot as plt
 
 try:
     from Parametres import *
     from profil import *
+    from analyses import *
 except:
     pass
 from inte_fluxBase import inte_fluxBase
@@ -44,29 +40,29 @@ x,y = position(X, Y, prm)
 z = np.linspace(0, prm.L, prm.nz)
 list_Bi = [0.05,0.1, 1, 10, 20, 100]
 
-for Bi_i in list_Bi:
-    prm.setBi(Bi_i)
-    A,b = mdf_assemblage(X,Y,prm)
-    c = np.linalg.solve(A,b) 
-    c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
-    c_R = c_reshaped[0,:].transpose()
-    c_0 = c_reshaped[-1,:].transpose()
-    # label_0 = "Profil r=0 "+str(prm.Bi)
-    # label_R = "Profil r="+str(prm.R)+" Bi="+str(prm.Bi)
-    label_0 = "Profil r=0 "
-    label_R = "Profil r="+str(prm.R)
-    plt.plot(x[0,:],c_R,label=label_R)  
-    plt.plot(x[-1,:],c_0,label=label_0)  
-    if prm.Bi<200:
-        T = ref_analytique(z,prm)
-        plt.plot(z, T, '--r', label="Profil analytique")
-    plt.legend()
-    plt.title("Profil de température Bi: "+str(prm.Bi))
-    plt.ylabel("Température (K)")
-    plt.xlabel("Position z (m)")
-    plt.savefig("ComparaisonProfilTemperature_Bi"+str(prm.Bi)+".png", dpi=400)
-    plt.show()
-
+# for Bi_i in list_Bi:
+#     prm.setBi(Bi_i)
+#     A,b = mdf_assemblage(X,Y,prm)
+#     c = np.linalg.solve(A,b) 
+#     c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
+#     c_R = c_reshaped[0,:].transpose()
+#     c_0 = c_reshaped[-1,:].transpose()
+#     # label_0 = "Profil r=0 "+str(prm.Bi)
+#     # label_R = "Profil r="+str(prm.R)+" Bi="+str(prm.Bi)
+#     label_0 = "Profil r=0 "
+#     label_R = "Profil r="+str(prm.R)
+#     plt.plot(x[0,:],c_R,label=label_R)  
+#     plt.plot(x[-1,:],c_0,label=label_0)  
+#     if prm.Bi<200:
+#         T = ref_analytique(z,prm)
+#         plt.plot(z, T, '--r', label="Profil analytique")
+#     plt.legend()
+#     plt.title("Profil de température Bi: "+str(prm.Bi))
+#     plt.ylabel("Température (K)")
+#     plt.xlabel("Position z (m)")
+#     plt.savefig("ComparaisonProfilTemperature_Bi"+str(prm.Bi)+".png", dpi=400)
+#     plt.show()
+analyse_profil_temp(z,X,Y,x,y,list_Bi, prm)
 #=========================2e analyse - Base=========================
 list_Bi = np.linspace(.01,100,100)
 r = np.linspace(prm.R, 0, prm.nr)
@@ -163,17 +159,19 @@ plt.legend()
 plt.savefig("q_fluxContour.png", dpi=400)
 plt.show()
 # # =========================2e analyse - Erreur =========================
-erreur=[]
-for i in range(len(list_Bi)):
-    erreur.append(abs(q_analytique[i]-q_contour_isole[i])/q_analytique[i]*100)
-plt.title("Erreur entre analytique et isole flux contour")    
-plt.plot(list_Bi,erreur,label="erreur")  
-plt.ylabel("Pourcentage (%)")
-plt.xlabel("Bi")
-plt.legend()
-plt.savefig("q_erreur_fluxContour.png", dpi=400)
-plt.show()
-
+# erreur=[]
+# for i in range(len(list_Bi)):
+#     erreur.append(abs(q_analytique[i]-q_contour_isole[i])/q_analytique[i]*100)
+# plt.title("Erreur entre analytique et isole flux contour")    
+# plt.plot(list_Bi,erreur,label="erreur")  
+# plt.ylabel("Pourcentage (%)")
+# plt.xlabel("Bi")
+# plt.legend()
+# plt.semilogx()
+# plt.semilogy()
+# plt.savefig("q_erreur_fluxContour.png", dpi=400)
+# plt.show()
+analyse_erreur(z,X,Y,x,y,list_Bi,prm)
 # # =========================Analyse Bonus=========================
 list_Bi = [0.1, 1, 10, 20, 100]
 
