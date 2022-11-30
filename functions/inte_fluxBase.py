@@ -5,7 +5,7 @@ Created on Sat Nov 19 17:12:07 2022
 @author: Étienne
 """
 import numpy as np
-from inte_trapz import inte_trapz
+from functions.inte_trapz import inte_trapz
 
 def inte_fluxBase(T,r,prm):
     """Fonction qui intègre la conduction de chaleur a travers la base de l'ailette

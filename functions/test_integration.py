@@ -6,7 +6,7 @@
 # erreur sous le seuil prescrit. Aucune entree ou sortie
 
 import numpy as np
-from inte_trapz import inte_trapz
+from functions.inte_trapz import inte_trapz
 
 # Bornes d'integration
 xi = -2

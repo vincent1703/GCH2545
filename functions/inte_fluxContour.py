@@ -6,7 +6,7 @@ Created on Sat Nov 19 17:14:55 2022
 """
 
 import numpy as np
-from inte_trapz import inte_trapz
+from functions.inte_trapz import inte_trapz
 
 def inte_fluxContour(T,z,r,bout,D,prm):
     """Fonction qui intègre la convection sur la surface de l'ailette.
