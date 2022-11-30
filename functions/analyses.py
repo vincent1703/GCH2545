@@ -11,7 +11,35 @@ from functions.inte_fluxBase import inte_fluxBase
 from functions.inte_fluxContour import inte_fluxContour
 from functions.analytique import ref_analytique
 
+
+
+
 def analyse_profil_temp(list_Bi,prm):
+    """
+    Fonction générant des graphiques de la température selon la position 
+    dans l'ailette et effectuant une comparaison avec 
+
+    Parameters
+    ----------
+    list_Bi : Numpy array
+        Liste discrète des nombres de Biot à analyser.
+    prm : Objet class parametres()
+                     L : [m] Longueur
+                     k : [W/m*K] Conductivité thermique
+                     T_inf : [K] Température de l'air ambiant
+                     T_w : [K] Température de base
+                     R : [m] Rayon 
+                     h :[W/m^2*K] Coefficient de convection
+                     Bi : [Bi] Nombre de Biot
+                     nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+                     nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
+                     CL : Condition limite ("isole" ou "convection")
+
+    Returns
+    -------
+    None.
+
+    """
     X = [0,prm.L]       #Position selon l'axe des z (rayon)
     Y = [0,prm.R]       #Position selon l'axe des r
     z = np.linspace(0, prm.L, prm.nz)
@@ -42,6 +70,27 @@ def analyse_profil_temp(list_Bi,prm):
         plt.show()
 
 def analyse_erreur(list_Bi,prm):
+    """
+    Fonction analysant l'erreur entre la solution analytique et la solution par
+    MDF pour différents nombres de Biot
+    
+    Entrées : 
+        
+    list_Bi : Numpy array
+        Liste discrète des nombres de Biot à analyser.
+    prm : Objet class parametres()
+                     L : [m] Longueur
+                     k : [W/m*K] Conductivité thermique
+                     T_inf : [K] Température de l'air ambiant
+                     T_w : [K] Température de base
+                     R : [m] Rayon 
+                     h :[W/m^2*K] Coefficient de convection
+                     Bi : [Bi] Nombre de Biot
+                     nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+                     nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
+                     CL : Condition limite ("isole" ou "convection")
+
+    """
     X = [0,prm.L]       #Position selon l'axe des z (rayon)
     Y = [0,prm.R]       #Position selon l'axe des r
     z = np.linspace(0, prm.L, prm.nz)
@@ -81,6 +130,26 @@ def analyse_erreur(list_Bi,prm):
     
     
 def analyse_flux(list_Bi,prm):
+    """
+    Fonction analysant le flux de chaleur à travers la base et à travers le 
+    contour de l'ailette (avec ou sans les extrémités). Génère 2 graphiques
+    
+    Entrées : 
+    list_Bi : Numpy array
+        Liste discrète des nombres de Biot à analyser.
+    prm : Objet class parametres()
+                     L : [m] Longueur
+                     k : [W/m*K] Conductivité thermique
+                     T_inf : [K] Température de l'air ambiant
+                     T_w : [K] Température de base
+                     R : [m] Rayon 
+                     h :[W/m^2*K] Coefficient de convection
+                     Bi : [Bi] Nombre de Biot
+                     nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+                     nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
+                     CL : Condition limite ("isole" ou "convection")
+
+    """
     
     # Initialisation des paramètres et vecteurs pour l'analyse
     
@@ -192,6 +261,27 @@ def analyse_flux(list_Bi,prm):
     
     
 def analyse_bonus(list_Bi, prm):
+    """
+    Fonction générant une analyse de la température dans l'ailette, à la fois
+    dans la direction radiale et axiale (carte 2D des températures)
+    Génère des graphiques pour chaque nombre de Biot et pour chaque C.L. 
+    
+    Entrées : 
+    list_Bi : Numpy array
+        Liste discrète des nombres de Biot à analyser.
+    prm : Objet class parametres()
+                     L : [m] Longueur
+                     k : [W/m*K] Conductivité thermique
+                     T_inf : [K] Température de l'air ambiant
+                     T_w : [K] Température de base
+                     R : [m] Rayon 
+                     h :[W/m^2*K] Coefficient de convection
+                     Bi : [Bi] Nombre de Biot
+                     nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+                     nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
+                     CL : Condition limite ("isole" ou "convection")
+
+    """
     
     X = [0,prm.L]       #Position selon l'axe des z (rayon)
     Y = [0,prm.R]       #Position selon l'axe des r

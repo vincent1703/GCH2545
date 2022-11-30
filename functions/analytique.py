@@ -9,16 +9,16 @@ def ref_analytique(z,prm):
     z : Vecteur
         Vecteur comprenant les points sur la longueur en mètre
     - prm : Objet class parametres()
-    #                 L : [m] Longueur
-    #                 k : [W/m*K] Conductivité thermique
-    #                 T_inf : [K] Température de l'air ambiant
-    #                 T_w : [K] Température de base
-    #                 R : [m] Rayon 
-    #                 h :[W/m^2*K] Coefficient de convection
-    #                 Bi : [Bi] Nombre de Biot
-    #                 nr : Nombre de noeuds (direction radiale, r=0 à r=R)
-    #                 nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
-    #                 N : [-] Nombre de points 
+                     L : [m] Longueur
+                     k : [W/m*K] Conductivité thermique
+                     T_inf : [K] Température de l'air ambiant
+                     T_w : [K] Température de base
+                     R : [m] Rayon 
+                     h :[W/m^2*K] Coefficient de convection
+                     Bi : [Bi] Nombre de Biot
+                     nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+                     nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
+                     CL : Condition limite ("isole" ou "convection")
 
     Returns
     -------

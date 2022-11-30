@@ -8,17 +8,17 @@ def position(X,Y,prm):
         - X : Bornes du domaine en r, X = [r_min, r_max]
         - Y : Bornes du domaine en z, Y = [z_min, z_max]
         - prm : Objet class parametres()
-        #                 L : [m] Longueur
-        #                 k : [W/m*K] Conductivité thermique
-        #                 T_inf : [K] Température de l'air ambiant
-        #                 T_w : [K] Température de base
-        #                 R : [m] Rayon 
-        #                 h :[W/m^2*K] Coefficient de convection
-        #                 Bi : [Bi] Nombre de Biot
-        #                 nr : Nombre de noeuds (direction radiale, r=0 à r=R)
-        #                 nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
-        #                 N : [-] Nombre de points 
-
+                         L : [m] Longueur
+                         k : [W/m*K] Conductivité thermique
+                         T_inf : [K] Température de l'air ambiant
+                         T_w : [K] Température de base
+                         R : [m] Rayon 
+                         h :[W/m^2*K] Coefficient de convection
+                         Bi : [Bi] Nombre de Biot
+                         nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+                         nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
+                         CL : Condition limite ("isole" ou "convection")
+                         
     Sorties (dans l'ordre énuméré ci-bas):
         - xv : Matrice (array) de dimension (nz x nr) qui contient la position en r
         - yv : Matrice (array) de dimension (nz x nr) qui contient la position en z
@@ -51,16 +51,16 @@ def mdf_assemblage(X,Y,prm):
         - X : Bornes du domaine en x, X = [x_min, x_max]
         - Y : Bornes du domaine en y, Y = [y_min, y_max]
         - prm : Objet class parametres()
-        #                 L : [m] Longueur
-        #                 k : [W/m*K] Conductivité thermique
-        #                 T_inf : [K] Température de l'air ambiant
-        #                 T_w : [K] Température de base
-        #                 R : [m] Rayon 
-        #                 h :[W/m^2*K] Coefficient de convection
-        #                 Bi : [Bi] Nombre de Biot
-        #                 nr : Nombre de noeuds (direction radiale, r=0 à r=R)
-        #                 nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
-        #                 CL : condition limite, texte ("isole" ou "convection")
+                         L : [m] Longueur
+                         k : [W/m*K] Conductivité thermique
+                         T_inf : [K] Température de l'air ambiant
+                         T_w : [K] Température de base
+                         R : [m] Rayon 
+                         h :[W/m^2*K] Coefficient de convection
+                         Bi : [Bi] Nombre de Biot
+                         nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+                         nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
+                         CL : condition limite, texte ("isole" ou "convection")
 
     Sorties (dans l'ordre énuméré ci-bas):
         - A : Matrice (array)

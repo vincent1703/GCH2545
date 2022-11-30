@@ -24,7 +24,7 @@ def inte_fluxBase(T,r,prm):
         #                 Bi : [Bi] Nombre de Biot
         #                 nr : Nombre de noeuds (direction radiale, r=0 à r=R)
         #                 nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
-        #                 N : [-] Nombre de points 
+                          CL : Condition limite ("isole" ou "convection")
 
     Sortie:
         - Valeur numérique de l'intégrale résultante (perte en W)

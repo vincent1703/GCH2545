@@ -7,6 +7,7 @@
 try:
     from functions.Parametres import *
     from functions.analyses import *
+    from functions.test_integration import *
 except:
     pass
 
@@ -47,7 +48,8 @@ list_Bi_cont=np.linspace(0.01,100,100)
 
 
 # =============================================================================
-# Appel des fonnctions d'analyses 
+# Appel des fonctions d'analyses(description plus détaillées dans les fonctions
+#                                d'analyse)
 # =============================================================================
 
 analyse_profil_temp(list_Bi_discr,prm)
@@ -59,5 +61,10 @@ analyse_erreur(list_Bi_discr,prm)
 analyse_bonus(list_Bi_discr,prm)
 
 
+# =============================================================================
+# Appel de la fonction du test d'intégration
+# =============================================================================
+
+test_integration()
 
 
