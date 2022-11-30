@@ -11,9 +11,12 @@ from inte_fluxBase import inte_fluxBase
 from inte_fluxContour import inte_fluxContour
 from analytique import ref_analytique
 
-def analyse_profil_temp(z,X,Y,x,y,list_Bi,prm):
+def analyse_profil_temp(list_Bi,prm):
+    X = [0,prm.L]       #Position selon l'axe des z (rayon)
+    Y = [0,prm.R]       #Position selon l'axe des r
     z = np.linspace(0, prm.L, prm.nz)
-    list_Bi = [0.05,0.1, 1, 10, 20, 100]
+    x,y = position(X, Y, prm)
+    
 
     for Bi_i in list_Bi:
         prm.setBi(Bi_i)
@@ -38,11 +41,17 @@ def analyse_profil_temp(z,X,Y,x,y,list_Bi,prm):
         plt.savefig("ComparaisonProfilTemperature_Bi"+str(prm.Bi)+".png", dpi=400)
         plt.show()
 
-def analyse_erreur(z,X,Y,x,y,list_Bi,prm):
+def analyse_erreur(list_Bi,prm):
+    
+    
+    X = [0,prm.L]       #Position selon l'axe des z (rayon)
+    Y = [0,prm.R]       #Position selon l'axe des r
+    z = np.linspace(0, prm.L, prm.nz)
+    x,y = position(X, Y, prm)    
     q_contour_isole = []
     q_analytique=[]
     r = np.linspace(prm.R, 0, prm.nr)
-    z = np.linspace(0, prm.L, prm.nz)
+
     for Bi_i in list_Bi:
         bout = True
         D=2
@@ -68,6 +77,6 @@ def analyse_erreur(z,X,Y,x,y,list_Bi,prm):
     plt.xlabel("Bi")
     plt.legend()
     plt.semilogx()
-    plt.semilogy()
+#    plt.semilogy()
     plt.savefig("q_erreur_fluxContour.png", dpi=400)
     plt.show()

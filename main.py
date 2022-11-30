@@ -1,4 +1,53 @@
 # -*- coding: utf-8 -*-
+
+#############------NEW MAIN------##################
+
+# =============================================================================
+# Importations de librairies et modules
+# =============================================================================
+
+try:
+    from Parametres import *
+    from analyses import *
+except:
+    pass
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# =============================================================================
+# Definition des parametres pour les analyses
+# =============================================================================
+
+L = .2       # [m] Longueur
+k = 10       # [W/m*K] Conductivité thermique
+T_inf = 0+273.15     # [K] Température de l'air ambiant
+T_w = 100+273.15     # [K] Température de base
+R = .2       # [m] Rayon 
+h = 1      # [W/m^2*K] Coefficient de convection
+Bi = 1
+nr = 20     # [-] Nombre de points en z  "prendre plus que 20 n'est pas necessaire selon erreur avec analytique"
+nz = 20
+CL = "isole"
+    
+prm = Parametres(L, k, T_inf, T_w, R, h, nr, nz,CL)
+
+list_Bi = [0.05,0.1, 1, 10, 20, 100]  #Nombres de Biot pour les analyses
+
+
+# =============================================================================
+# Appel des fonnctions d'analyses 
+# =============================================================================
+
+#analyse_profil_temp(list_Bi,prm)
+
+#analyse_erreur(list_Bi,prm)
+
+    
+
+
+#############------OLD MAIN------##################
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -191,3 +240,6 @@ for Bi_i in list_Bi:
         ax.set_ylabel("Position r")
         plt.savefig("Profil2D_Bi"+str(prm.Bi)+"_"+str(prm.CL)+".png", dpi=400)
         plt.show()
+        
+        
+        """
