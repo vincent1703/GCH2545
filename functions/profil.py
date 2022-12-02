@@ -146,7 +146,6 @@ def mdf_assemblage(X,Y,prm):
         
         
     # Frontière droite
-    
     if CL=="isole":
         i = nz - 1
         for j in range(1, nr-1):
@@ -165,6 +164,7 @@ def mdf_assemblage(X,Y,prm):
             b[k] = 2*dz*h*(T_inf)/k_cond
     else:
         print("ERREUR: condition limite string non reconnu")
+        
             
     # Frontière bas
     j = nr - 1
@@ -179,25 +179,6 @@ def mdf_assemblage(X,Y,prm):
     # Frontière haut
     j = 0
     for i in range(1, nz):
-        # k = i * nr + j
-        # A[k,k] = -3 + h*2*dr/k_cond  
-        # A[k,k+1] = 4
-        # A[k,k+2] = -1
-        # b[k] = h*2*dr*T_inf/k_cond
-        
-        
-        # k = i * nr + j
-        # A[k,k] = -3*k_cond/(2*dz)-h 
-        # A[k,k+1] = 4*k_cond/(2*dz)
-        # A[k,k+2] = -1/(2*dz)
-        # b[k] = -T_inf*h
-        
-        # k = i * nr + j
-        # A[k,k] =  3*k_cond - 2*h*dr
-        # A[k,k+1] = -4*k_cond
-        # A[k,k+2] = k_cond
-        # b[k] = -T_inf*h*dr*2
-        
         k = i * nr + j
         A[k,k] =  3 + 2*h*dr/k_cond
         A[k,k+1] = -4
