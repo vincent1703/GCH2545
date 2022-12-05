@@ -118,8 +118,9 @@ def analyse_erreur(list_Bi,prm):
     erreur=[]
     for i in range(len(list_Bi)):
         erreur.append(abs(q_analytique[i]-q_contour_isole[i])/q_analytique[i]*100)
-    plt.title("Erreur entre analytique et isole flux contour")    
-    plt.plot(list_Bi,erreur,label="erreur")  
+    plt.title("Erreur entre analytique et isole flux contour")   
+    label_title = "erreur pour nr="+str(prm.nr)+" nz="+str(prm.nz)
+    plt.plot(list_Bi,erreur,label=label_title)  
     plt.ylabel("Pourcentage (%)")
     plt.xlabel("Bi")
     plt.legend()
@@ -286,7 +287,8 @@ def analyse_bonus(list_Bi, prm):
     X = [0,prm.L]       #Position selon l'axe des z (rayon)
     Y = [0,prm.R]       #Position selon l'axe des r
     x,y = position(X, Y, prm)    
-
+    min_val = 273
+    max_val = 373
     
     condition_limite = ["isole","convection"]
     for Bi_i in list_Bi:
@@ -297,7 +299,7 @@ def analyse_bonus(list_Bi, prm):
             c = np.linalg.solve(A,b)
             c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
             fig,ax = plt.subplots(nrows=1,ncols=1)
-            fig1 = ax.pcolormesh(x,y, c_reshaped)
+            fig1 = ax.pcolormesh(x,y, c_reshaped, vmin=min_val, vmax=max_val)
             plt.colorbar(fig1, ax=ax)
             ax.set_title("Profil Temperature (K) Bi="+str(prm.Bi)+" CL="+str(prm.CL))
             ax.set_xlabel("Position z")
