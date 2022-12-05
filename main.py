@@ -45,7 +45,7 @@ prm = Parametres(L, k, T_inf, T_w, R, h, nr, nz,CL)
 
 list_Bi_discr = np.array([0.05,0.1, 1, 10, 20, 100])  
 list_Bi_cont=np.linspace(0.01,100,100) 
-
+list_noeuds = np.array([5,6,7,8,9,10, 15, 20, 25, 30,35,40,50,60,70,80,90,100])  
 
 # =============================================================================
 # Appel des fonctions d'analyses(description plus détaillées dans les fonctions
@@ -56,7 +56,10 @@ analyse_profil_temp(list_Bi_discr,prm)
 
 analyse_flux(list_Bi_cont,prm)   
 
+
 analyse_erreur(list_Bi_discr,prm)
+
+analyse_ordre_erreur(0.05,list_noeuds,prm)
 
 analyse_bonus(list_Bi_discr,prm)
 

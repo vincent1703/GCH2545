@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import linregress
 
 try:
     from functions.Parametres import *
@@ -10,7 +11,6 @@ except:
 from functions.inte_fluxBase import inte_fluxBase
 from functions.inte_fluxContour import inte_fluxContour
 from functions.analytique import ref_analytique
-
 
 
 
@@ -128,7 +128,71 @@ def analyse_erreur(list_Bi,prm):
 #    plt.semilogy()
     plt.savefig("renders/flux/q_erreur_fluxContour.png", dpi=400)
     plt.show()
+
+def analyse_ordre_erreur(Bi,list_noeuds,prm):
+    """
+    Fonction analysant l'erreur entre la solution analytique et la solution par
+    MDF pour différents nombres de Biot
     
+    Entrées : 
+        
+    list_Bi : Numpy array
+        Liste discrète des nombres de Biot à analyser.
+    prm : Objet class parametres()
+                     L : [m] Longueur
+                     k : [W/m*K] Conductivité thermique
+                     T_inf : [K] Température de l'air ambiant
+                     T_w : [K] Température de base
+                     R : [m] Rayon 
+                     h :[W/m^2*K] Coefficient de convection
+                     Bi : [Bi] Nombre de Biot
+                     nr : Nombre de noeuds (direction radiale, r=0 à r=R)
+                     nz : Nombre de noeuds (direction axiale, de z=0 à z=L)
+                     CL : Condition limite ("isole" ou "convection")
+
+    """
+    X = [0,prm.L]       #Position selon l'axe des z (rayon)
+    Y = [0,prm.R]       #Position selon l'axe des r
+    z = np.linspace(0, prm.L, prm.nz)
+    x,y = position(X, Y, prm)    
+    q_contour_isole = []
+    q_analytique=[]
+    r = np.linspace(prm.R, 0, prm.nr)
+    for noeuds in list_noeuds:
+        prm.nr = noeuds
+        prm.nz =noeuds
+        r = np.linspace(prm.R, 0, prm.nr)
+        z = np.linspace(0, prm.L, prm.nz)
+        x,y = position(X, Y, prm)
+        bout = True
+        D=2
+        prm.setBi(Bi)
+        prm.setCL("isole")
+        A,b = mdf_assemblage(X,Y,prm)
+        c = np.linalg.solve(A,b) 
+        c_reshaped = c.reshape(prm.nz,prm.nr).transpose()
+        T= c_reshaped
+        q_contour_isole.append(inte_fluxContour(T,z,r,bout,D,prm))
+        D=1
+        bout = False
+        T = ref_analytique(z,prm)
+        q_analytique.append(inte_fluxContour(T, z,r,bout,D, prm))
+
+
+    erreur=[]
+    for i in range(len(list_noeuds)):
+        erreur.append(abs(q_analytique[i]-q_contour_isole[i])/q_analytique[i]*100)
+    plt.title("Erreur entre analytique et isole flux contour")   
+    label_title = "erreur pour Bi="+str(prm.Bi)
+    plt.plot((list_noeuds),(erreur),label=label_title)  
+    plt.ylabel("Pourcentage (%)")
+    plt.xlabel("Nombre noeuds")
+    plt.legend()
+    plt.semilogx()
+    plt.semilogy()
+    plt.savefig("renders/flux/q_erreur_ordre.png", dpi=400)
+    plt.show()    
+    print(linregress(np.log(list_noeuds), np.log(erreur)))
     
 def analyse_flux(list_Bi,prm):
     """
